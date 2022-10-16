@@ -23,6 +23,6 @@ type Mutation {
 }
 
 type Subscription {
-  subscribe(id: String!): UserUpdateInfo
+  onDataChanged(id: String!): UserUpdateInfo
     @aws_subscribe(mutations: ["dataChanged"])
 }
