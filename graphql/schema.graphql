@@ -1,0 +1,28 @@
+# graphql/schema.graphql
+enum UserUpdateCategory {
+  Hierarchy
+  File
+  User
+  UserPlan
+}
+type UserUpdateInfo {
+  id: String! # user id (channel name)
+  category: UserUpdateCategory!
+}
+input UserUpdateInput {
+  id: String! # user id (channel name)
+  category: UserUpdateCategory!
+}
+
+type Query {
+  getData: UserUpdateInfo
+}
+
+type Mutation {
+  dataChanged(input: UserUpdateInput!): UserUpdateInfo! # required data response
+}
+
+type Subscription {
+  subscribe(id: String!): UserUpdateInfo
+    @aws_subscribe(mutations: ["dataChanged"])
+}
