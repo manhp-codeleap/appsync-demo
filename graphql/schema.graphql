@@ -1,28 +1,36 @@
 # graphql/schema.graphql
-enum UserUpdateCategory {
-  Hierarchy
-  File
-  User
-  UserPlan
+enum UpdateType {
+  user_update
+  hierarchy_update
+  user_deletion
+  hierarchy_creation
+  # @TODO: add more type here
 }
-type UserUpdateInfo {
+
+type UpdateInfo {
   id: String! # user id (channel name)
-  category: UserUpdateCategory!
+  type: UpdateType!
+  datetime: AWSTimestamp # datetime
+  device_id: String
 }
-input UserUpdateInput {
+
+input UpdateInput {
   id: String! # user id (channel name)
-  category: UserUpdateCategory!
+  type: UpdateType!
+  datetime: AWSTimestamp! # datetime
+  device_id: String!
 }
 
 type Query {
-  getData: UserUpdateInfo
+  getData: UpdateInfo
 }
 
 type Mutation {
-  dataChanged(input: UserUpdateInput!): UserUpdateInfo! # required data response
+  dataChanged(input: UpdateInput!): UpdateInfo! # required data response
 }
 
 type Subscription {
-  onDataChanged(id: String!): UserUpdateInfo
+  # user id
+  onDataChanged(id: String!): UpdateInfo
     @aws_subscribe(mutations: ["dataChanged"])
 }
